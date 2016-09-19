@@ -1,0 +1,17 @@
+{
+    "name": "cs9163-asst-1",
+    "repository": {
+	"type": "git",
+	"url": "https://github.com/prasanmouli/cs9163-asst-1.git"
+    },
+    "dependencies": {
+	"body-parser": "^1.13.3",
+	"express": "^4.13.3",
+	"mongoose": "^4.6.0",
+	"swig": "^1.4.2"
+    },
+    "devDependencies": {
+	"nodemon": "^1.5.0"
+    },
+    "license": "MIT"
+}

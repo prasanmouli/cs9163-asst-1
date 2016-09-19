@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div id="photo_upload_container" class="photo_upload_container">
+  <form id="photo_upload" class="photo_upload" method="POST" action="/upload">
+    File : <input type="file" id="photo" name="photo">
+    Caption : <input type="text" id="caption" name="caption">
+    <input type="submit" id="photo_submit" name="photo_submit">
+  </form>
+</div>
+
+{% endblock %}
