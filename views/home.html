@@ -3,8 +3,8 @@
 {% block content %}
 
 <div id="photo_upload_container" class="photo_upload_container">
-  <form id="photo_upload" class="photo_upload" method="POST" action="/upload">
-    File : <input type="file" id="photo" name="photo">
+  <form id="photo_upload" class="photo_upload" method="POST" action="/upload" enctype="multipart/form-data">
+    Files (limit to 5 files, max file size 5MB, jpeg/png/gif only) : <input type="file" id="photo" name="photo" multiple>
     Caption : <input type="text" id="caption" name="caption">
     <input type="submit" id="photo_submit" name="photo_submit">
   </form>
