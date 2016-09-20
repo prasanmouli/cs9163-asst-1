@@ -58,18 +58,11 @@ var photos = mongoose.model('photos', {
 
 /* routes */
 app.get('/', function(req, res){
-    if(!checkSession())
-	res.redirect('/login');
-    else
-	res.redirect('/home');
+    res.redirect('/home');
 });
 
 app.get('/home', function(req, res){
-    if(!checkSession())
-	res.redirect('/login');
-    else{
-	res.render('home', {});
-    }
+    res.render('home', {});
 });
 
 app.post('/upload', function(req, res){
@@ -96,17 +89,19 @@ app.post('/upload', function(req, res){
     });    
 });
 
-app.get('/photos', function(req, res){
-    res.render('photos');
+app.get('/photos/:page', function(req, res){
+
+    var page = parseInt(req.params.page);
+    photos.find().sort({"date":"-1"}).select({_id:0, name:1, caption:1, mimetype:1}).exec(function(err, vals){
+	var inter = vals.slice(page*10-10, page*10-1);
+	if(inter.length == 0 || page <= 0){
+	    console.log(page, 0);
+	    res.render('photos', {vals : inter, page : page, len : 0});
+	}
+	else{
+	    console.log(page, 10);
+	    res.render('photos', {vals : inter, page : page, len : 10});
+	}
+    });
+    
 });
-
-// placeholder SESSION variable until sessions is implemented
-function checkSession(){
-    return (typeof SESSION != undefined);
-}
-
-
-/*
-app.use(express.static(__dirname+'/public', { maxAge: 31557600000 }));
-*/
-
