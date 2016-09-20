@@ -1,0 +1,48 @@
+
+ASSIGNMENT 1 - INSTALLATION AND SETUP
+
+My Environment
+--------------
+  OSX 10.11.4
+  Node.js 6.3.0
+  MongoDB 3.2.8
+  
+
+3-Step Installation
+-------------------
+
+   1. Install Node.js
+   
+      OSX :
+      $ brew install node
+
+      Linux :
+      Depending on the package manager, follow the instructions on https://nodejs.org/en/download/package-manager/
+
+
+   2. Install and Run MongoDB
+
+      OSX :
+      $ brew install mongodb
+      $ sudo brew services start mongodb
+
+      Linux :
+      Depending on the distribution, follow the instructions on https://docs.mongodb.com/manual/administration/install-on-linux/
+
+
+   3. In the root directory of the project, run
+
+      $ npm install
+
+      This should install all dependencies. (try with sudo in case of errors)
+
+
+
+Running the web app
+-------------------
+
+   -> Start the node server. In the root directory of the project, run
+
+      $ node app.js
+
+      You can access it at http://localhost:8000
