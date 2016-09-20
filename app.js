@@ -98,7 +98,7 @@ app.post('/upload', function(req, res){
 		res.render('upload', {message : 'Please select atleast one file.'});
 	    }
 	    else{
-		/* create a new 'photos' collection and save in 'photo-upload' database */
+		/* create a new 'photos' collection and save in 'photo-upload' */
 		var photo = new photos({
 		    name : req.file.filename,
 		    caption : req.body.caption,
@@ -116,7 +116,7 @@ app.post('/upload', function(req, res){
 
 /* 1. :page is the GET parameter indicating page number */
 /* 2. find documents in 'photos' sorted by date */
-/* 3. values are sliced based on page number */
+/* 3. documents are sliced based on page number and sent to the template */
 
 app.get('/photos/:page', function(req, res){
 
@@ -135,5 +135,3 @@ app.get('/photos/:page', function(req, res){
     });
     
 });
-
-/** END **/
