@@ -2,7 +2,7 @@
 CS9163 Asst. 1
 
 ```
-Directory Layout
+Directory Info
 
 .
 ├── public                    # static css, js files
