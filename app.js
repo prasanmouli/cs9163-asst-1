@@ -4,11 +4,12 @@ var http = require('http'),
     express = require('express'),
     crypto = require('crypto'),
     multer  = require('multer'),
+    mongoose = require('mongoose'),
     config = require('./src/config.js');
 
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
-	callback(null, './uploads/');
+	callback(null, './public/uploads/');
     },
     filename: function (req, file, callback) {
 	var md5sum = crypto.createHash('md5').update(file.originalname);
@@ -27,7 +28,7 @@ var upload = multer({
 	}
 	callback(null, true);
     }
-}).array('photo', config.UPLOAD.FILE_LIMIT);
+}).single('photo');
 
 var app = express();
 
@@ -43,6 +44,19 @@ app.listen(app.get('port'), () => {
     console.log('Server listening on '+app.get('port'));
 });
 
+
+/* mongoose stuff */
+mongoose.connect('mongodb://localhost/photo-upload');
+
+var photos = mongoose.model('photos', {
+    name : String,
+    caption : String,
+    mimetype : String,
+    date : {type : Date, default:Date.now}
+});
+
+
+/* routes */
 app.get('/', function(req, res){
     if(!checkSession())
 	res.redirect('/login');
@@ -61,12 +75,23 @@ app.get('/home', function(req, res){
 app.post('/upload', function(req, res){
     upload(req, res, function(err){
 	if(req.fileError || err){
-	    console.log(req.fileError, err, req.files);
-	    res.render('upload', {message : 'Error!! Try again. 1 or more files were not uploaded. (limit to 5 files, max file size 5MB, jpeg/png/gif only)'});
+	    console.log(req.fileError, err, req.file);
+	    res.render('upload', {message : 'Error!! Try again. File was not uploaded. (max file size 5MB, jpeg/png/gif only)'});
 	}
 	else{
-	    console.log(req.body, req.files);
-	    res.render('upload', {message : 'Upload successful!'});
+	    console.log(req.body, req.file);
+	    if(req.file == undefined){
+		res.render('upload', {message : 'Please select atleast one file.'});
+	    }
+	    else{
+		var photo = new photos({
+		    name : req.file.filename,
+		    caption : req.body.caption,
+		    mimetype : req.file.mimetype
+		});
+		photo.save();
+		res.render('upload', {message : 'Upload successful!'});
+	    }
 	}
     });    
 });
@@ -84,3 +109,4 @@ function checkSession(){
 /*
 app.use(express.static(__dirname+'/public', { maxAge: 31557600000 }));
 */
+
