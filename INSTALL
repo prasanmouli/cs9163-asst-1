@@ -46,3 +46,11 @@ Running the web app
       $ node app.js
 
       You can access it at http://localhost:8000
+
+
+
+MongoDB shell
+-------------
+
+   -> Quick-start guide to working with MongoDB - https://docs.mongodb.com/getting-started/shell/introduction/
+
