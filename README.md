@@ -10,5 +10,6 @@ Directory Info
 ├── src                       # source files
 ├── views                     # HTML template files
 ├── app.js                    # main server file
+├── INSTALL
 └── README.md
 ```
