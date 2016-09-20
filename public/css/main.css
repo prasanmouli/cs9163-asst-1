@@ -1,0 +1,12 @@
+.photo_upload_container{
+    width: 70%;
+    margin-left: 15%;
+}
+.upload-div{
+    text-align: center;
+}
+.photos-div, .navigate{
+    width: 100%;
+    float: left;
+    margin-bottom: 20px;
+}

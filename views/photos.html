@@ -2,6 +2,7 @@
 
 {% block content %}
 
+<div class="photos-div">
 {% if len == 0 %}
   Nothing to show. <a href=/home> Home </a>
 {% endif %}
@@ -15,12 +16,15 @@
     </div>
   {% endfor %}
 {% endif %}
+</div>
 
+<div class="navigate">
 {% if page > 0 && len == 10 %}
   {% if page > 1 %}
-    <a href=/photos/{{ page-1 }}>Previous</a>
+    <a href=/photos/{{ page-1 }}>Previous</a><br/>
   {% endif %}
     <a href=/photos/{{ page+1 }}>Next</a>
 {% endif %}
-    
+</div>
+
 {% endblock %}

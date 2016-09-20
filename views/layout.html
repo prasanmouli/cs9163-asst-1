@@ -1,12 +1,25 @@
 <html>
   <head>
     <link rel = "stylesheet" type="text/css" href = "/public/css/main.css">
-    <script src ="/public/js/jquery-3.1.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
   </head>
 
   <body>
-    {% block content %}
-    {% endblock %}
+    <div id="photo_upload_container" class="photo_upload_container">
+      <h3 align="center"> Upload Photos </h3>
+      {% block content %}
+      {% endblock %}
+      <br/>
+      
+      <div>
+	<a href="/home">Home</a>
+	<br/>
+	<a href="/photos/1">Photos</a>
+      </div>
+    </div>
+    
+    <script src ="/public/js/jquery-3.1.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
     <script src="/public/js/main.js"></script>
   </body>
 </html>

@@ -1,11 +1,19 @@
-var http = require('http'),
-    swig = require('swig'),
-    bodyParser = require('body-parser'),
-    express = require('express'),
-    crypto = require('crypto'),
-    multer  = require('multer'),
-    mongoose = require('mongoose'),
-    config = require('./src/config.js');
+var http = require('http'), // http server
+    swig = require('swig'), // javascript template engine
+    bodyParser = require('body-parser'), // middleware for parsing request bodies
+    express = require('express'), // framework for node.js
+    crypto = require('crypto'), 
+    multer  = require('multer'), // multipart form data handling
+    mongoose = require('mongoose'), // mongodb object modeling
+    config = require('./src/config.js'); // global configuration params
+
+
+
+/** Multer **/
+/* 1. set destination folder */
+/* 2. define naming convention for files saved */
+/* 3. set upload file size limit */
+/* 4. allow only png/jpeg/gif files */
 
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -16,6 +24,7 @@ var storage = multer.diskStorage({
 	callback(null, Date.now()+'-'+md5sum.digest('hex'));
     }
 });
+
 var upload = multer({
     storage : storage,
     limits : {
@@ -30,8 +39,11 @@ var upload = multer({
     }
 }).single('photo');
 
-var app = express();
 
+
+/** Express configuration **/
+
+var app = express();
 app.set('port', config.PORT);
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
@@ -45,9 +57,15 @@ app.listen(app.get('port'), () => {
 });
 
 
-/* mongoose stuff */
+
+/** Mongoose configuration **/
+
+/* MongoDB databases and collections need NOT be created before running the app. They are created on the fly if they don't already exist. */
+
+/* connect to 'photo-upload' db */
 mongoose.connect('mongodb://localhost/photo-upload');
 
+/* define mongodb model for 'photos' collection */
 var photos = mongoose.model('photos', {
     name : String,
     caption : String,
@@ -56,15 +74,19 @@ var photos = mongoose.model('photos', {
 });
 
 
-/* routes */
+
+/** Routes configuration **/
+
 app.get('/', function(req, res){
     res.redirect('/home');
 });
 
+/* home page -> renders './views/home.html' */
 app.get('/home', function(req, res){
     res.render('home', {});
 });
 
+/* handle POST uploads -> renders './views/upload.html' */
 app.post('/upload', function(req, res){
     upload(req, res, function(err){
 	if(req.fileError || err){
@@ -72,11 +94,11 @@ app.post('/upload', function(req, res){
 	    res.render('upload', {message : 'Error!! Try again. File was not uploaded. (max file size 5MB, jpeg/png/gif only)'});
 	}
 	else{
-	    console.log(req.body, req.file);
 	    if(req.file == undefined){
 		res.render('upload', {message : 'Please select atleast one file.'});
 	    }
 	    else{
+		/* create a new 'photos' collection and save in 'photo-upload' database */
 		var photo = new photos({
 		    name : req.file.filename,
 		    caption : req.body.caption,
@@ -89,19 +111,29 @@ app.post('/upload', function(req, res){
     });    
 });
 
+
+/* view photos -> renders './views/photos.html' */
+
+/* 1. :page is the GET parameter indicating page number */
+/* 2. find documents in 'photos' sorted by date */
+/* 3. values are sliced based on page number */
+
 app.get('/photos/:page', function(req, res){
 
     var page = parseInt(req.params.page);
+    if(page == NaN)
+	res.render('photos', {vals : inter, page : page, len : 0});
+	
     photos.find().sort({"date":"-1"}).select({_id:0, name:1, caption:1, mimetype:1}).exec(function(err, vals){
-	var inter = vals.slice(page*10-10, page*10-1);
+	var inter = vals.slice(page*10-10, page*10);	
 	if(inter.length == 0 || page <= 0){
-	    console.log(page, 0);
 	    res.render('photos', {vals : inter, page : page, len : 0});
 	}
 	else{
-	    console.log(page, 10);
 	    res.render('photos', {vals : inter, page : page, len : 10});
 	}
     });
     
 });
+
+/** END **/

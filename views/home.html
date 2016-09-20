@@ -2,12 +2,26 @@
 
 {% block content %}
 
-<div id="photo_upload_container" class="photo_upload_container">
-  <form id="photo_upload" class="photo_upload" method="POST" action="/upload" enctype="multipart/form-data">
-    Files (max file size 5MB, jpeg/png/gif only) : <input type="file" id="photo" name="photo" required>
-    Caption : <input type="text" id="caption" name="caption">
-    <input type="submit" id="photo_submit" name="photo_submit">
-  </form>
-</div>
+<form id="photo_upload" class="photo_upload" method="POST" action="/upload" enctype="multipart/form-data">
+  <div class="file-field input-field">
+    <div class="btn">
+      <span>File</span>
+      <input type="file" id="photo" name="photo" required>
+    </div>
+    <div class="file-path-wrapper">
+      <input class="file-path validate" type="text"  placeholder="max file size 5MB, jpeg/png/gif only">
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-field col s12">
+      <input type="text" id="caption" name="caption" class="validate">
+      <label for="caption">Caption</label>
+    </div>
+  </div>
+  
+  <button class="btn waves-effect waves-light" type="submit" id="photo_submit" name="photo_submit">
+    Submit
+  </button>
+</form>
 
 {% endblock %}
