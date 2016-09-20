@@ -13,7 +13,7 @@ var storage = multer.diskStorage({
     },
     filename: function (req, file, callback) {
 	var md5sum = crypto.createHash('md5').update(file.originalname);
-	callback(null, Date.now()+'.'+md5sum.digest('hex'));
+	callback(null, Date.now()+'-'+md5sum.digest('hex'));
     }
 });
 var upload = multer({
